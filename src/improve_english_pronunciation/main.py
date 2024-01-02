@@ -25,11 +25,11 @@ st.markdown("# Improve English Pronunciation")
 with st.expander("See description"):
     st.markdown(description, unsafe_allow_html=True)
 
-source = st.selectbox("Select source", ["Weblio", "Cambridge"])
+source = st.selectbox("Select source", ["Cambridge", "Weblio"])
 
 col1, col2 = st.columns(2)
 
-def display_input_text(col: DeltaGenerator, title: str, height: int=200) -> str:
+def display_input_text(col: DeltaGenerator, title: str, height: int=200) -> tuple[str,str]:
     """display_input_text with link and ipa"""
     with col:
         st.header(title)
@@ -41,14 +41,14 @@ def display_input_text(col: DeltaGenerator, title: str, height: int=200) -> str:
         if source == "Cambridge":
             st.write("    "," ".join([f"[{word}](https://dictionary.cambridge.org/dictionary/english/{word})" for word in text_lst]))
         st.write("IPA   :", ipa.convert(text))
+        st.write("Youglish :", " ".join([f"[{word}]( https://youglish.com/pronounce/{word.replace(" ","%20")}/pronounce)" for word in text_lst]))
 
-        return text
+        return text, ipa.convert(text)
 
-answer = display_input_text(col1, "Answer")
+answer, answer_ipa = display_input_text(col1, "Answer")
 
-user_answer = display_input_text(col2, "Your Voice")
+user_answer, user_ipa = display_input_text(col2, "Your Voice")
 
 # Check pronunciation differences
 st.header("Check pronunciation differences")
-st.write("Distance(text): ", Levenshtein.distance(answer, user_answer))
-
+st.write("Distance(ipa) : ", Levenshtein.distance(answer_ipa, user_ipa))
