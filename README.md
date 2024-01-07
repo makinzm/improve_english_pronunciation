@@ -1,6 +1,6 @@
 # improve-english-pronunciation
 
 ```bash
-# rye sync
+# rye sync --no-lock
 make streamlit
 ```
