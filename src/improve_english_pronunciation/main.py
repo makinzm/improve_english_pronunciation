@@ -3,11 +3,16 @@
     - Mac: [Use Voice Control on your Mac - Apple Support](https://support.apple.com/en-us/102225)
 - Output: pronunciation differences
 """
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import eng_to_ipa as ipa
 import Levenshtein
 import streamlit as st
-from streamlit.delta_generator import DeltaGenerator
+
+if TYPE_CHECKING:
+    from streamlit.delta_generator import DeltaGenerator
 
 description = """
 Check pronunciation differences between two sentences.
@@ -41,7 +46,7 @@ def display_input_text(col: DeltaGenerator, title: str, height: int=200) -> tupl
         if source == "Cambridge":
             st.write("    "," ".join([f"[{word}](https://dictionary.cambridge.org/dictionary/english/{word})" for word in text_lst]))
         st.write("IPA   :", ipa.convert(text))
-        st.write("Youglish :", " ".join([f"[{word}]( https://youglish.com/pronounce/{word.replace(" ","%20")}/pronounce)" for word in text_lst]))
+        st.write("Sentences :", " ".join([f"[{word}]( https://sentence.yourdictionary.com/search/result?q={word.replace(" ","%20")})" for word in text_lst]))
 
         return text, ipa.convert(text)
 
